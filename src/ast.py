@@ -45,7 +45,7 @@ class Print():
         voidptr_ty = ir.IntType(8).as_pointer()
         fmt = "%i \n\0"
         c_fmt = ir.Constant(ir.ArrayType(ir.IntType(8), len(fmt)), 
-                            bytearray(fmt.encode("utf-8")))
+                            bytearray(fmt.encode("utf8")))
         global_fmt = ir.GlobalVariable(self.module, c_fmt.type, name="fstr")
         global_fmt.linkage = 'internal'
         global_fmt.global_constant = True

@@ -6,7 +6,8 @@ class Parser():
     def __init__(self, module, builder, printf):
         self.pg = ParserGenerator(
             ['NUMBER', 'PRINT', 'OPEN_PAREN', 'CLOSE_PAREN',
-             'SEMI_COLON', 'SUM', 'SUB']
+             'SEMI_COLON', 'SUM', 'SUB'],
+            precedence=[("left", ["SUM", "SUB"])],
         )
         self.module = module
         self.builder = builder
