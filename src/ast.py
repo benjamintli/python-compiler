@@ -31,6 +31,24 @@ class Sub(BinaryOp):
         return ir_sub
 
 
+class Div(BinaryOp):
+    def eval(self):
+        ir_div = self.builder.udiv(self.left.eval(), self.right.eval())
+        return ir_div
+
+
+class Mul(BinaryOp):
+    def eval(self):
+        ir_mul = self.builder.mul(self.left.eval(), self.right.eval())
+        return ir_mul
+
+
+class Mod(BinaryOp):
+    def eval(self):
+        ir_mod = self.builder.urem(self.left.eval(), self.right.eval())
+        return ir_mod
+
+
 class Print():
     def __init__(self, builder, module, printf, value):
         self.builder = builder

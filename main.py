@@ -1,24 +1,29 @@
 from src.lexer import Lexer
 from src.parser import Parser
 from src.codegen import CodeGen
+import sys
 
-input_code = "input.toy"
-with open(input_code) as f:
-    text_input = f.read()
 
-lexer = Lexer().get_lexer()
-tokens = lexer.lex(text_input)
+if __name__ == "__main__":
+    input_code_path = sys.argv[1]
+    output_file_path = sys.argv[2]
+    with open(input_code_path) as f:
+        text_input = f.readlines()
 
-codegen = CodeGen()
 
-module = codegen.module
-builder = codegen.builder
-printf = codegen.printf
+    lexer = Lexer().get_lexer()
+    tokens_1 = lexer.lex(text_input[0])
 
-pg = Parser(module, builder, printf)
-pg.parse()
-parser = pg.get_parser()
-parser.parse(tokens).eval()
+    codegen = CodeGen()
 
-codegen.create_ir()
-codegen.save_ir("tests/output.ll")
+    module = codegen.module
+    builder = codegen.builder
+    printf = codegen.printf
+
+    pg = Parser(module, builder, printf)
+    pg.parse()
+    parser = pg.get_parser()
+    parser.parse(tokens_1).eval()
+
+    codegen.create_ir()
+    codegen.save_ir(output_file_path)
