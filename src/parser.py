@@ -1,17 +1,18 @@
 from rply import ParserGenerator
-from .ast import Number, Sum, Sub, Print, Mul, Div, Mod
+from .ast import Number, Sum, Sub, Print, Mul, Div, Mod, Or, And, Xor, Comparison
 
 
 class Parser():
     def __init__(self, module, builder, printf):
         self.pg = ParserGenerator(
             ['NUMBER', 'PRINT', 'OPEN_PAREN', 'CLOSE_PAREN',
-             'SEMI_COLON', 'SUM', 'SUB', 'MUL', 'DIV', 'MOD'],
-            precedence=[("left", ["MOD", "DIV", "MUL", "SUM", "SUB"])],
+             'SEMI_COLON', 'SUM', 'SUB', 'MUL', 'DIV', 'MOD', 'AND', 'OR', 'XOR', "<", ">", "<=", ">=", "==", "!="],
+            precedence=[("left", ["MOD", "DIV", "MUL", "SUM", "SUB", "AND", "OR", "XOR", "<", ">", "<=", ">=", "==", "!="])]
         )
         self.module = module
         self.builder = builder
         self.printf = printf
+        self.comparison_list = ["<", ">", "<=", ">=", "==", "!="]
 
     def parse(self):
         @self.pg.production('program : PRINT OPEN_PAREN expression CLOSE_PAREN SEMI_COLON')
@@ -23,6 +24,15 @@ class Parser():
         @self.pg.production('expression : expression DIV expression')
         @self.pg.production('expression : expression MUL expression')
         @self.pg.production('expression : expression MOD expression')
+        @self.pg.production('expression : expression OR expression')
+        @self.pg.production('expression : expression AND expression')
+        @self.pg.production('expression : expression XOR expression')
+        @self.pg.production('expression : expression > expression')
+        @self.pg.production('expression : expression < expression')
+        @self.pg.production('expression : expression >= expression')
+        @self.pg.production('expression : expression <= expression')
+        @self.pg.production('expression : expression == expression')
+        @self.pg.production('expression : expression != expression')
         def expression(p):
             left = p[0]
             right = p[2]
@@ -37,6 +47,14 @@ class Parser():
                 return Div(self.builder, self.module, left, right)
             elif operator.gettokentype() == 'MOD':
                 return Mod(self.builder, self.module, left, right)
+            elif operator.gettokentype() == 'OR':
+                return Or(self.builder, self.module, left, right)
+            elif operator.gettokentype() == 'AND':
+                return And(self.builder, self.module, left, right)
+            elif operator.gettokentype() == 'XOR':
+                return Xor(self.builder, self.module, left, right)
+            elif operator.gettokentype() in self.comparison_list:
+                return Comparison(self.builder, self.module, left, right, operator.gettokentype())
 
         @self.pg.production('expression : NUMBER')
         def number(p):

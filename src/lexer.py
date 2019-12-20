@@ -19,6 +19,15 @@ class Lexer():
         self.lexer.add('MUL', r'\*')
         self.lexer.add('DIV', r'\/')
         self.lexer.add('MOD', r'\%')
+        self.lexer.add('OR', r'\|')
+        self.lexer.add('AND', r'\&')
+        self.lexer.add('XOR', r'\^')
+        self.lexer.add('<', r'\<')
+        self.lexer.add('>', r'\>')
+        self.lexer.add('<=', r'\<=')
+        self.lexer.add('>=', r'\>=')
+        self.lexer.add('==', r'==')
+        self.lexer.add('!=', r'\!=')
         self.lexer.ignore('\s+')
 
 

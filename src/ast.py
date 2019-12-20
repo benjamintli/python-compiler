@@ -49,6 +49,34 @@ class Mod(BinaryOp):
         return ir_mod
 
 
+class Or(BinaryOp):
+    def eval(self):
+        ir_or = self.builder.or_(self.left.eval(), self.right.eval())
+        return ir_or
+
+
+class And(BinaryOp):
+    def eval(self):
+        ir_and = self.builder.and_(self.left.eval(), self.right.eval())
+        return ir_and
+
+
+class Xor(BinaryOp):
+    def eval(self):
+        ir_xor = self.builder.xor(self.left.eval(), self.right.eval())
+        return ir_xor
+
+
+class Comparison(BinaryOp):
+    def __init__(self, builder, module, left, right, comparison):
+        super().__init__(builder, module, left, right)
+        self.comparison = comparison
+
+    def eval(self):
+        ir_cmp = self.builder.icmp_unsigned(self.comparison, self.left.eval(), self.right.eval())
+        return ir_cmp
+
+
 class Print():
     def __init__(self, builder, module, printf, value):
         self.builder = builder
