@@ -22,12 +22,12 @@ class Lexer():
         self.lexer.add('OR', r'\|')
         self.lexer.add('AND', r'\&')
         self.lexer.add('XOR', r'\^')
-        self.lexer.add('<', r'\<')
-        self.lexer.add('>', r'\>')
         self.lexer.add('<=', r'\<=')
         self.lexer.add('>=', r'\>=')
-        self.lexer.add('==', r'==')
+        self.lexer.add('==', r'\==')
         self.lexer.add('!=', r'\!=')
+        self.lexer.add('<', r'\<')
+        self.lexer.add('>', r'\>')
         self.lexer.ignore('\s+')
 
 

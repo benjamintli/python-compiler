@@ -1,3 +1,4 @@
 appdirs==1.4.3
 llvmlite==0.30.0
 rply==0.7.7
+pytest==5.3.2
