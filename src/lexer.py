@@ -26,6 +26,8 @@ class Lexer():
         self.lexer.add('>=', r'\>=')
         self.lexer.add('==', r'\==')
         self.lexer.add('!=', r'\!=')
+        self.lexer.add('SHL', r'\<<')
+        self.lexer.add('LSHR', r'\>>')
         self.lexer.add('<', r'\<')
         self.lexer.add('>', r'\>')
         self.lexer.ignore('\s+')

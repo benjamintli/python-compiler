@@ -1,13 +1,18 @@
 from rply import ParserGenerator
-from .ast import Number, Sum, Sub, Print, Mul, Div, Mod, Or, And, Xor, Comparison
+from .ast import Number, Sum, Sub, Print, Mul, Div, Mod, ShiftLeft, ShiftRight, Or, And, Xor, Comparison
 
 
 class Parser():
     def __init__(self, module, builder, printf):
         self.pg = ParserGenerator(
             ['NUMBER', 'PRINT', 'OPEN_PAREN', 'CLOSE_PAREN',
-             'SEMI_COLON', 'SUM', 'SUB', 'MUL', 'DIV', 'MOD', 'AND', 'OR', 'XOR', "<", ">", "<=", ">=", "==", "!="],
-            precedence=[("left", ["MOD", "DIV", "MUL", "SUM", "SUB", "AND", "OR", "XOR", "<", ">", "<=", ">=", "==", "!="])]
+             'SEMI_COLON', 'SUM', 'SUB', 'MUL', 'DIV', 'MOD',
+             'SHL', 'LSHR', 'AND', 'OR', 'XOR', "<", ">", "<=", 
+             ">=", "==", "!="],
+            precedence=[
+                ("left", ["MOD", "DIV", "MUL", 'LSHR', 'SHL', "SUM", "SUB",
+                          "AND", "OR", "XOR", "<", ">", "<=", ">=", "==", "!="])
+                ]
         )
         self.module = module
         self.builder = builder
@@ -33,6 +38,8 @@ class Parser():
         @self.pg.production('expression : expression <= expression')
         @self.pg.production('expression : expression == expression')
         @self.pg.production('expression : expression != expression')
+        @self.pg.production('expression : expression SHL expression')
+        @self.pg.production('expression : expression LSHR expression')
         def expression(p):
             left = p[0]
             right = p[2]
@@ -55,6 +62,10 @@ class Parser():
                 return Xor(self.builder, self.module, left, right)
             elif operator.gettokentype() in self.comparison_list:
                 return Comparison(self.builder, self.module, left, right, operator.gettokentype())
+            elif operator.gettokentype() == 'SHL':
+                return ShiftLeft(self.builder, self.module, left, right)
+            elif operator.gettokentype() == 'LSHR':
+                return ShiftRight(self.builder, self.module, left, right)
 
         @self.pg.production('expression : NUMBER')
         def number(p):

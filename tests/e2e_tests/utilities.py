@@ -13,4 +13,5 @@ def compile_and_return_result(test_code):
     proc = subprocess.Popen(["./test"], stdout=subprocess.PIPE)
     stdout_value = proc.communicate()[0]
     exe_result_as_int = int(stdout_value.decode().rstrip())
+    subprocess.check_output(["rm", "test"])
     return exe_result_as_int

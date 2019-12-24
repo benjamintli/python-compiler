@@ -21,3 +21,15 @@ def test_modulo():
     assert mod == 0
     mod_club = compile_and_return_result("print (10 % 9);")
     assert mod_club == 1
+
+def test_shift_left():
+    shift_left = compile_and_return_result("print (1 << 2);")
+    assert shift_left == 4
+    shift_left_again = compile_and_return_result("print (2 << 2);")
+    assert shift_left == 4
+
+def test_shift_right():
+    shift_right = compile_and_return_result("print (2 >> 1);")
+    assert shift_right == 1
+    shift_right = compile_and_return_result("print (1 >> 3);")
+    assert shift_right == 0

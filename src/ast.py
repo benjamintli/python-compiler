@@ -18,6 +18,7 @@ class BinaryOp():
         self.left = left
         self.right = right
 
+# Arithmetic Operators
 
 class Sum(BinaryOp):
     def eval(self):
@@ -49,6 +50,19 @@ class Mod(BinaryOp):
         return ir_mod
 
 
+class ShiftLeft(BinaryOp):
+    def eval(self):
+        ir_shift_left = self.builder.shl(self.left.eval(), self.right.eval())
+        return ir_shift_left
+
+
+class ShiftRight(BinaryOp):
+    def eval(self):
+        ir_shift_right = self.builder.lshr(self.left.eval(), self.right.eval())
+        return ir_shift_right
+
+
+# Logical Operators
 class Or(BinaryOp):
     def eval(self):
         ir_or = self.builder.or_(self.left.eval(), self.right.eval())
